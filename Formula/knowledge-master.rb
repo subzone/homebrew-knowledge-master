@@ -5,26 +5,32 @@ class KnowledgeMaster < Formula
   license "MIT"
 
   depends_on "pipx"
-  depends_on "ollama"
 
   def install
-    system "pipx", "install", "knowledge-master", "--pip-args=--no-cache-dir"
-    # Symlink into Homebrew's bin
-    bin.install_symlink Dir["#{HOMEBREW_PREFIX}/share/pipx/venvs/knowledge-master/bin/km"]
-    bin.install_symlink Dir["#{HOMEBREW_PREFIX}/share/pipx/venvs/knowledge-master/bin/km-server"]
+    # Install via pipx into its own isolated environment
+    system "pipx", "install", "knowledge-master==1.0.2"
+  end
+
+  def post_install
+    ohai "knowledge-master installed via pipx"
+    ohai "Commands available: km, km-server"
+    ohai "Make sure ~/.local/bin is in your PATH"
   end
 
   def caveats
     <<~EOS
-      Requires Docker for FalkorDB:
-        km start
+      knowledge-master is installed via pipx.
+      
+      Ensure ~/.local/bin is in your PATH:
+        export PATH="$HOME/.local/bin:$PATH"
 
-      Configure your AI tool:
-        km setup claude  # or cursor, kiro, copilot, amazonq
+      Then:
+        km start
+        km setup cursor
     EOS
   end
 
   test do
-    assert_match "Knowledge Master", shell_output("#{bin}/km --help")
+    system "pipx", "list"
   end
 end
