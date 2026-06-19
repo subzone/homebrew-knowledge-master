@@ -3,7 +3,7 @@ class KnowledgeMaster < Formula
 
   desc "Local-first knowledge graph for developers. Your AI agent's permanent memory."
   homepage "https://github.com/subzone/knowledge-master"
-  url "https://github.com/subzone/knowledge-master/archive/refs/tags/v1.0.0.tar.gz"
+  url "https://github.com/subzone/knowledge-master/archive/refs/tags/v1.0.2.tar.gz"
   license "MIT"
 
   depends_on "python@3.12"
