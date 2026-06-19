@@ -4,21 +4,23 @@ class KnowledgeMaster < Formula
   url "https://github.com/subzone/knowledge-master/archive/refs/tags/v1.0.2.tar.gz"
   license "MIT"
 
-  depends_on "python@3.12"
+  depends_on "pipx"
   depends_on "ollama"
 
   def install
-    venv = virtualenv_create(libexec, "python3.12")
-    venv.pip_install_and_link buildpath
+    system "pipx", "install", "knowledge-master", "--pip-args=--no-cache-dir"
+    # Symlink into Homebrew's bin
+    bin.install_symlink Dir["#{HOMEBREW_PREFIX}/share/pipx/venvs/knowledge-master/bin/km"]
+    bin.install_symlink Dir["#{HOMEBREW_PREFIX}/share/pipx/venvs/knowledge-master/bin/km-server"]
   end
 
   def caveats
     <<~EOS
-      Knowledge Master requires Docker for FalkorDB:
+      Requires Docker for FalkorDB:
         km start
 
-      Quick setup for your AI tool:
-        km setup claude    # or cursor, kiro, copilot, amazonq
+      Configure your AI tool:
+        km setup claude  # or cursor, kiro, copilot, amazonq
     EOS
   end
 
