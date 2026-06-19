@@ -1,6 +1,4 @@
 class KnowledgeMaster < Formula
-  include Language::Python::Virtualenv
-
   desc "Local-first knowledge graph for developers. Your AI agent's permanent memory."
   homepage "https://github.com/subzone/knowledge-master"
   url "https://github.com/subzone/knowledge-master/archive/refs/tags/v1.0.2.tar.gz"
@@ -10,16 +8,17 @@ class KnowledgeMaster < Formula
   depends_on "ollama"
 
   def install
-    virtualenv_install_with_resources
+    venv = virtualenv_create(libexec, "python3.12")
+    venv.pip_install_and_link buildpath
   end
 
   def caveats
     <<~EOS
-      Knowledge Master requires Docker for FalkorDB.
-      Start with: km start
+      Knowledge Master requires Docker for FalkorDB:
+        km start
 
-      For Ollama embedding model:
-        ollama pull nomic-embed-text
+      Quick setup for your AI tool:
+        km setup claude    # or cursor, kiro, copilot, amazonq
     EOS
   end
 
